@@ -2,6 +2,7 @@
 const { default: axios } = require("axios");
 const yargs = require("yargs");
 const fs=require('fs') 
+const FormData= require('form-data')
 var token = fs.readFileSync('./token.json')
 token=JSON.parse(token)
 var ip="http://localhost:3000/cli/"
@@ -10,7 +11,7 @@ const options = yargs
 .usage("Usage: -gi <get file by id>")
 .usage("Usage: -f <find file by name>")
 
-.option("up", {alias:"Upload", describe: "Path to file", type: "string", demandOption: false })
+.option("up", {alias:"upload", describe: "Path to file", type: "string", demandOption: false })
 .option("g", { alias:"Get",describe: "get file by id", type: "string", demandOption: false })
 .option("f", { alias:"Find",describe: "find file", type: "string", demandOption: false })
 .option("t", { alias:"test",describe: "find file", type: "string", demandOption: false })
@@ -27,10 +28,18 @@ if (token.authtoken) {
 if (options.Find) {
     axios.get()
 }
-if (options.Upload) {
-    axios.get('http://localhost:3000/cli/upload')
-    .then(res=>console.log(res.data))
-    .catch(err=>console.log(err))
+if (options.upload) {
+    const form = new FormData();
+    form.append('file', fs.readFileSync(__dirname+'/bin/index1.js'));
+
+const config = {
+  headers: {
+    ...form.getHeaders(),
+    Authorization:token
+  },
+};
+
+axios.post('http://localhost:3000/cli/upload/', form.getBuffer(), config);
     // console.log(c.toString())
 }
 

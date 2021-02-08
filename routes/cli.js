@@ -12,8 +12,10 @@ router.get('/find',(req,res)=>{
     res.json("request came at /")
 })
 
-router.get('/upload',(req,res)=>{
-    res.send("request came at /")
+router.post('/upload',(req,res)=>{
+    // res.send("request came at /")
+    console.log(req.files)
+    res.end()
 })
 
 router.post('/registeruser',async (req,res,next)=>{
