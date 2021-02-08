@@ -5,6 +5,7 @@ const fileupload=require('express-fileupload')
 const mongoose=require('mongoose')
 const File=require('./models/cli')
 const {getseq,savefile} = require('./functions')
+const cli = require('./routes/cli')
 
 mongoose.connect("mongodb+srv://urlshortner:urlshortner@node.bczjx.mongodb.net/CLI?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true})
 .then((result)=>{console.log('connected')})
@@ -13,10 +14,13 @@ app.set('views','templates')
 app.set('view engine','ejs')
 app.use(bodyparser.json())
 app.use(fileupload())
+app.use('/cli/',cli)
+
 app.get('/',(req,res)=>{
 
     res.sendFile(__dirname+'/templates/index.html')
 })
+
 app.post('/addfile',async (req,res)=>{
 
     
