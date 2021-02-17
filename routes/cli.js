@@ -3,7 +3,9 @@ const path=require('path')
 const jwt = require('jsonwebtoken')
 const CLIU=require('../models/cliuser')
 const User=require('../models/users')
+const fs=require('fs')
 const jwt_secret="#1AmanKumarM"
+
 router.get('/',(req,res)=>{
     res.json("request came at /")
 })
@@ -13,9 +15,23 @@ router.get('/find',(req,res)=>{
 })
 
 router.post('/upload',(req,res)=>{
-    // res.send("request came at /")
-    console.log(req.files)
-    res.end()
+    const username=jwt.verify(req.headers.authtoken,jwt_secret);
+    const filename=req.headers.name
+    const incfile=req.files.file
+    const fileobj={
+        name:filename,
+        path:`./Clidata/${username}/${filename}`
+    }
+    incfile.mv(`./Clidata/${username}/${filename}`,function(err){
+        if(err){
+            res.status(503).send(err);
+        }
+        CLIU.update({username:username},{ $push: { files:  fileobj  } })
+        .then(res=>console.log(res))
+        .catch(err=>console.log(err))
+        res.status(200).send("file uploaded")
+    })
+
 })
 
 router.post('/registeruser',async (req,res,next)=>{
@@ -29,9 +45,7 @@ router.post('/registeruser',async (req,res,next)=>{
     .catch(err=>console.log(err))
 
 },async (req,res)=>{
-    
-    
-    
+
     const cliuser = new CLIU({
         username:req.body.name,
         files:[]
@@ -48,9 +62,12 @@ router.post('/registeruser',async (req,res,next)=>{
     .then()
     .catch(err=>res.status(403).send(err))
 
-
     res.status(200).json(token)
-
+    fs.mkdir(`./Clidata/${req.body.name}/`,function(err){
+        if (err){
+         res.status(503).send("server side error, try again later.")
+        }
+    })
     var decoded = jwt.verify(token,jwt_secret);
     // res.send(token)
     res.end()
@@ -68,12 +85,13 @@ router.post('/login',async (req,res)=>{
     res.end()
 })
 router.get('/test',(req,res)=>{
-    // CLIU.find()
+    CLIU.find()
+    .then(ers=>console.log(ers[3].files))
+    .catch(err=>console.log(err))
+    // new User({name:"test",token:"token"}).save()
     // .then(ers=>console.log(ers))
     // .catch(err=>console.log(err))
-    new User({name:"test",token:"token"}).save()
-    .then(ers=>console.log(ers))
-    .catch(err=>console.log(err))
+    
 
 })
 module.exports=router

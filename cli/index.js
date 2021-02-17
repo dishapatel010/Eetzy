@@ -26,21 +26,29 @@ if (token.authtoken) {
     console.log(options.Get)
 }
 if (options.Find) {
-    axios.get()
+    axios.get('http://localhost:3000/cli/showall')
+    .then(res=>console.log(res))
+    .catch(err=>console.log(err))
 }
 if (options.upload) {
     const form = new FormData();
-    form.append('file', fs.readFileSync(__dirname+'/bin/index1.js'));
+    form.append('file', fs.readFileSync(__dirname+options.upload));
 
+    function getnamefrompath(path){
+        const name= path.split('/')
+          return name[name.length-1]
+      }
 const config = {
   headers: {
     ...form.getHeaders(),
-    Authorization:token
+    authtoken:token.authtoken,
+    name: getnamefrompath(options.upload)
   },
 };
 
-axios.post('http://localhost:3000/cli/upload/', form.getBuffer(), config);
-    // console.log(c.toString())
+axios.post('http://localhost:3000/cli/upload/', form.getBuffer(), config)
+.then(res=>console.log(res.data))
+.catch(err=>console.log((err)))
 }
 
 if(options.test){
@@ -73,8 +81,8 @@ else{
     else if (options.create && options.username && options.password) {
         axios.post('http://localhost:3000/cli/registeruser/',{name:options.username,password:options.password})
         .then(res=>{
-        //    res.status===200 ? fs.writeFileSync('./token.json',JSON.stringify({authtoken:res.data})) : console.log("username is taken.")
-            console.log(res)
+           res.status===200 ? fs.writeFileSync('./token.json',JSON.stringify({authtoken:res.data})) : console.log("username is taken.")
+            // console.log(res)
     })
         .catch(err=>console.log(err.response.data))   
        }

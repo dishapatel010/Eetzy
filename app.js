@@ -7,6 +7,9 @@ const File=require('./models/cli')
 const {getseq,savefile} = require('./functions')
 const cli = require('./routes/cli')
 
+
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 mongoose.connect("mongodb+srv://urlshortner:urlshortner@node.bczjx.mongodb.net/CLI?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true})
 .then((result)=>{console.log('connected')})
 .catch((err)=>console.log(err))

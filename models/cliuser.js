@@ -8,7 +8,7 @@ const cliuserschema=new Schema({
     },
     files:{
         type:Array,
-        request:true
+        required:true
     }
 })
 const CLIU=mongoose.model('CLIU',cliuserschema)
