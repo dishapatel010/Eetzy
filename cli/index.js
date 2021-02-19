@@ -2,18 +2,20 @@
 const { default: axios } = require("axios");
 const yargs = require("yargs");
 const fs=require('fs') 
-const FormData= require('form-data')
+const FormData= require('form-data');
 var token = fs.readFileSync('./token.json')
 token=JSON.parse(token)
 var ip="http://localhost:3000/cli/"
 const options = yargs
 .usage("Usage: -u <path to file>")
 .usage("Usage: -gi <get file by id>")
-.usage("Usage: -f <find file by name>")
+.usage("Usage: -f <find all files >")
+
 
 .option("up", {alias:"upload", describe: "Path to file", type: "string", demandOption: false })
 .option("g", { alias:"Get",describe: "get file by id", type: "string", demandOption: false })
 .option("f", { alias:"Find",describe: "find file", type: "string", demandOption: false })
+.option("show", { alias:"show",describe: "find file", type: true, demandOption: false })
 .option("t", { alias:"test",describe: "find file", type: "string", demandOption: false })
 .option("l", { alias:"login",describe: "login", type: true, demandOption: false })
 .option("c", { alias:"create",describe: "create account", type: true, demandOption: false })
@@ -23,12 +25,68 @@ const options = yargs
 
 if (token.authtoken) {
     if (options.Get) {
-    console.log(options.Get)
+    
+    const a=Number(options.Get)
+    if(isNaN(a)){
+        console.log("Enter a correct id")
+        console.log("It better be a number :)")
+    }
+    else{
+        const headers={
+            authtoken:token.authtoken
+        }
+        axios.get(`http://localhost:3000/cli/getfile/${a}`,{headers})
+        .then(resp=>{
+            const buffer=resp.data.file_to_send
+            // console.log(tyoeo,buffer)
+            // const file_name=resp.data.name
+            // console.log(typeof resp.data)
+            // fs.open(`./Downloads/aman.js`,'w',function(err,fd){
+            //     if(err){
+            //         throw 'Some thing went wrong\n' + err
+            //     }
+
+            fs.writeFile('./Downloads/aman.js',String(buffer),function(err){
+                if (err) {
+                    throw err;
+                }
+            })
+            //     fs.write(fd,buffer,0,buffer.length,null,function(Err){
+            //         if (Err){
+            //             throw 'Error Creating File\n' +Err
+            //         }
+            //         fs.close(fd,function(){
+            //             console.log("File Downloaded Successfully")
+            //         })
+            //     })
+
+
+            // })
+        
+        
+        
+        })
+        .catch(Err=>console.log(Err))
+    }
 }
-if (options.Find) {
-    axios.get('http://localhost:3000/cli/showall')
-    .then(res=>console.log(res))
+
+if (options.show) {
+    const headers={
+        authtoken:token.authtoken
+    }
+    axios.get(`http://localhost:3000/cli/showall/${token.authtoken}`)
+    .then(resp=>{
+        const filedata=resp.data
+        const length=resp.data.length
+        console.log("\nID.\tName\tPermission\n")
+        // let i
+        for ( i = 0; i < length; i++) {
+            const element = filedata[i]
+            console.log(`${element.id}\t${element.name}\t${element.permission}`)
+        }
+    })
     .catch(err=>console.log(err))
+
 }
 if (options.upload) {
     const form = new FormData();
@@ -52,7 +110,8 @@ axios.post('http://localhost:3000/cli/upload/', form.getBuffer(), config)
 }
 
 if(options.test){
-    axios.get('http://localhost:3000/cli/test')
+    
+    axios.get('http://localhost:3000/cli/test',headers)
     .then(res=>console.log(res.data))
     .catch(err=>console.log(err))
     

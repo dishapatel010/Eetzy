@@ -38,8 +38,8 @@ app.post('/addfile',async (req,res)=>{
   file.mv(`./Data/${file.name}`,function(err){
       if (err) {
           return res.status(500).send(err)
-      }
-      res.send('Uploaded file id - '+fid)
+        }
+        res.send('Uploaded file id - '+fid)
   })
 })
 
