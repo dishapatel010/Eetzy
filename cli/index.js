@@ -37,31 +37,9 @@ if (token.authtoken) {
         }
         axios.get(`http://localhost:3000/cli/getfile/${a}`,{headers})
         .then(resp=>{
-            const buffer=resp.data.file_to_send
-            // console.log(tyoeo,buffer)
-            // const file_name=resp.data.name
-            // console.log(typeof resp.data)
-            // fs.open(`./Downloads/aman.js`,'w',function(err,fd){
-            //     if(err){
-            //         throw 'Some thing went wrong\n' + err
-            //     }
-
-            fs.writeFile('./Downloads/aman.js',String(buffer),function(err){
-                if (err) {
-                    throw err;
-                }
-            })
-            //     fs.write(fd,buffer,0,buffer.length,null,function(Err){
-            //         if (Err){
-            //             throw 'Error Creating File\n' +Err
-            //         }
-            //         fs.close(fd,function(){
-            //             console.log("File Downloaded Successfully")
-            //         })
-            //     })
-
-
-            // })
+            const buffer=new Buffer.from(resp.data.file_to_send)
+            const file_name=resp.data.name
+            fs.writeFileSync(`./Downloads/${file_name}`,String(buffer))
         
         
         

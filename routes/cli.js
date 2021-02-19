@@ -18,8 +18,10 @@ router.get('/getfile/:id',(req,res)=>{
                 // const file_to_send=fs.readFileSync(element.path)
                 // console.log(String( file_to_send))
 
-                
-                res.send({name:element.name,file_to_send})
+                fs.readFile(element.path,function(err,data){
+                    console.log(data,typeof data)
+                    res.send({name:element.name,file_to_send:data})
+                })
                 
                 break;
             }
