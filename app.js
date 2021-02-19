@@ -6,7 +6,7 @@ const mongoose=require('mongoose')
 const File=require('./models/cli')
 const {getseq,savefile} = require('./functions')
 const cli = require('./routes/cli')
-
+const web = require('./routes/web')
 
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
@@ -18,7 +18,7 @@ app.set('view engine','ejs')
 app.use(bodyparser.json())
 app.use(fileupload())
 app.use('/cli/',cli)
-
+app.use('/web/',web)
 app.get('/',(req,res)=>{
 
     res.sendFile(__dirname+'/templates/index.html')
