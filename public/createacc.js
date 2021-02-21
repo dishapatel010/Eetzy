@@ -6,7 +6,6 @@ const p0=d.getElementsByTagName('input')[0]
 const p1=d.getElementsByTagName('input')[2]
 
 async function postdata(url,data){
-    console.log(data)
     const response=await fetch(url,{
         method:'POST',
         headers: {
@@ -30,7 +29,10 @@ btn.addEventListener('click',function(e){
 
         postdata('/web/createacc',{username:p0.value,password:p1.value})
         .then(res=>{
-            infodiv.innerText=res.msg
+            alert(res.msg)
+            p1.value=""
+            p.value=""
+
         })
         .catch(err=>console.log(err))
     }

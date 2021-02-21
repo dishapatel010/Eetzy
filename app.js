@@ -1,5 +1,6 @@
 const express=require('express')
 const bodyparser=require('body-parser')
+const cookieParser=require('cookie-parser')
 const app=express()
 const fileupload=require('express-fileupload')
 const mongoose=require('mongoose')
@@ -13,6 +14,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.connect("mongodb+srv://urlshortner:urlshortner@node.bczjx.mongodb.net/CLI?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true})
 .then((result)=>{console.log('connected')})
 .catch((err)=>console.log(err))
+app.use(cookieParser())
 app.set('views','templates')
 app.set('view engine','ejs')
 app.use(express.static('public'))
@@ -80,7 +82,13 @@ app.get('/viewfile/:fname',(req,res)=>{
 })
 
 app.get('/test',async (req,res)=>{
-    res.cookie('user', "aman", {maxAge: 10800}).send('cookie set');
+    res.cookie('aman','kumar',{ maxAge: 900000, httpOnly: true })
+    res.end()
+})
+app.get('/test1',async (req,res)=>{
+    console.log(req.cookies)
+    res.end()
+
 })
 
 
