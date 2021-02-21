@@ -15,7 +15,10 @@ mongoose.connect("mongodb+srv://urlshortner:urlshortner@node.bczjx.mongodb.net/C
 .catch((err)=>console.log(err))
 app.set('views','templates')
 app.set('view engine','ejs')
+app.use(express.static('public'))
 app.use(bodyparser.json())
+
+app.use(bodyparser.urlencoded({extended:true}))
 app.use(fileupload())
 app.use('/cli/',cli)
 app.use('/web/',web)
@@ -77,9 +80,7 @@ app.get('/viewfile/:fname',(req,res)=>{
 })
 
 app.get('/test',async (req,res)=>{
-    new File({id:3,name:"test",path:"test"}).save()
-    .then(resp=>console.log(resp))
-    .catch(err=>console.log(err))
+    res.cookie('user', "aman", {maxAge: 10800}).send('cookie set');
 })
 
 
