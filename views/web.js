@@ -73,7 +73,7 @@ const checkuserexists=(req,res,next)=>{
     })
     }   
 const gethome=(req,res)=>{
-    res.render('404')
+    res.render('home')
 }
 const logout=(req,res)=>{
     res.clearCookie('authtoken')

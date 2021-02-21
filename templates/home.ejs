@@ -5,9 +5,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .inner{
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            flex-wrap: wrap;
+        }
+        .left{
+            flex-grow: 0.5;
+            flex-basis:1 !important;
+            min-width: 50%;
+            border: 2px solid red;
+        }
+        .right
+        {
+            flex-grow: 0.5;
+            flex-basis:1 !important;
+            border: 2px solid red;
+        }
+        nav{
+            background-color: aqua;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <a href="/web/showall">showall</a>
-    <a href="/web/upload">upload</a>
+    <nav>ETZY</nav>
+    <div class="inner">
+    <div class="left">
+        
+    </div>
+    <div class="right">
+        <input type="file">
+    </div>
+    </div>
+    <script src="../home.js"></script>  
 </body>
 </html>
