@@ -26,7 +26,7 @@ app.use('/cli/',cli)
 app.use('/web/',web)
 app.get('/',(req,res)=>{
 
-    res.redirect('/web/')
+    res.redirect('/web/');
 })
 
 app.listen(3000,()=>console.log(`port ${3000}`))
