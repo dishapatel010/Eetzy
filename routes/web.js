@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const {Home,Homepost, webcreate,createacc, checkuserexists, homemiddleware, gethome,logout}=require('../views/web')
+const fileapi= require('./api')
+router.use('/api/',homemiddleware,fileapi)
 router.get('/',Home)
 router.post('/',Homepost)   
 router.get('/create',webcreate)

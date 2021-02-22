@@ -2,7 +2,7 @@ const jwt =require('jsonwebtoken')
 const User=require('../models/users')
 const CLIU=require('../models/cliuser')
 const jwt_secret="#1AmanKumarM"
-
+const fs=require('fs')
 const WebHome=(req,res)=>{
     const auth_status=req.cookies.authtoken
     if (auth_status) {
@@ -18,7 +18,7 @@ const authmiddleware=(req,res,next)=>{
         next()
     }
     else{
-        res.redirect('/')
+        res.redirect('/web/')
     }
 }
 const Homepost=(req,res)=>{
@@ -51,7 +51,17 @@ const createacc=(req,res)=>{
         files:[]
     })
     userfiles.save()
+    
+    fs.mkdir(`./Clidata/${username}/`,function(err){
+        if (err){
+         res.status(503).json({msg:"server side error, try again later."})
+        }
+    })
+
+
+
     res.json({msg:"Account Created you can login now"})
+
 }
 
 const checkuserexists=(req,res,next)=>{
