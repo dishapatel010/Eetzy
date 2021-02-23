@@ -29,4 +29,4 @@ app.get('/',(req,res)=>{
     res.redirect('/web/');
 })
 
-app.listen(3000,()=>console.log(`port ${3000}`))
+app.listen(process.env.PORT||3000)

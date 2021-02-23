@@ -1,4 +1,9 @@
 {
+  "name": "ETZY",
+  "version": "1.0.0",
+  "scripts": {
+    "start":"node app.js"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
@@ -9,5 +14,9 @@
     "mongoose": "^5.11.15",
     "nodemon": "^2.0.7",
     "yargs": "13.2"
+  },
+  "engines": {
+    "node": "14.1"
   }
+
 }
