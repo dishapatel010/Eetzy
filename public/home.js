@@ -52,6 +52,7 @@ up_btn.addEventListener('click',function(e){
     .then(res=>{
         alert(res.msg)
         document.getElementById('file').value=""
+        window.location=window.location
     })
     .catch(err=>console.log(err))
 }
