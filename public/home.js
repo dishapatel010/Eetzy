@@ -1,4 +1,4 @@
-async function getdata(url,data){
+ async function getdata(url,data){
     const response=await fetch(url,{
         method:'GET',
         headers: {
@@ -23,11 +23,11 @@ function loaded(){
 }
 
 function appendfiles(arr){
-    const ol=document.getElementsByTagName('ol')[0]
+    const ol=document.getElementsByClassName('contents')[0]
 
     for (let index = 0; index < arr.length; index++) {
         const element = arr[index];
-        const li=document.createElement('li')
+        const li=document.createElement('div')
         const new_element=document.createElement('a')
         new_element.href=`/web/api/downloadfile/${element.name}`
         new_element.innerHTML=element.name
