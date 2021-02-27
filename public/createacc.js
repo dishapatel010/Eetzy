@@ -20,10 +20,13 @@ async function postdata(url,data){
 
 btn.addEventListener('click',function(e){
     e.preventDefault()
-    if(p1.value!==p.value){
-        infodiv.innerText="Passwords didnt match"
-        p1.value=""
-        p.value=""
+    if(p.value!=="" && p0.value!="" && p1.value!==""){
+        if (!p.value.includes(" ") && !p0.value.includes(" ") & !p1.value.includes(" ")) {
+            
+            if(p1.value!==p.value){
+                infodiv.innerText="Passwords didnt match"
+                p1.value=""
+                p.value=""
     }
     else{
 
@@ -35,7 +38,21 @@ btn.addEventListener('click',function(e){
 
         })
         .catch(err=>console.log(err))
+ 
+        }   
     }
+    else{
+        alert("Credentials cannot contain a \" \"")
+        p0.value=""
+        p1.value=""
+        p.value=""
+    }
+}
+else
+{
+    alert("Credentials cannot be empty.")
+    
+}
     
 })
 

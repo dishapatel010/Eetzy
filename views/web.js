@@ -26,7 +26,7 @@ const Homepost=(req,res)=>{
     User.findOne({name:body.username,password:body.password})
     .then(result=>{
         if(result===null){
-            res.render('web',{info:'username and password didnt match. Try again ',info1:'if you dont have an account try making one here'})
+            res.render('web',{info:'Username and Password didn\'t match.',info1:'New Here? '})
         }
         else{
             const auth_token=jwt.sign(body.username,jwt_secret)

@@ -22,19 +22,26 @@
             <img src="../login.svg" width="100%" height="100%" />
           </div>
           <div class="col col-xs-12 col-sm-5" id="loginarea">
-              <h1 > Welcome Back!</h1><hr>
+              <h1 > Welcome Back :)</h1><hr>
               <br>
               <form action="/web/" method="POST" id="test">
-                <label for="username">Username</label><br>
+                <label for="username" >Username</label><br>
                 <input type="text" id="username" name="username" /></br></br>
                 <label for="passwd">Password</label><br>
                 <input type="password" id="passwd" name="password"/></br></br>
-                <button class="btn btn-primary mybtn" type="submit">Login</button>    
-                <p> <br><%= info %></p>
-                <%= info1 %> 
-                <br>
-                <button class="btn btn-light mybtn" > <a href='/web/create/'>Create account</a></button>
-            </form>
+                <button class="btn btn-primary mybtn" type="submit">Sign In</button>    
+
+                <% if (info) { %>
+                  <script>
+                     var inf = `<%- info %>`
+                     alert(inf)            
+                  </script>
+             <% } %>
+             <br>
+             <br>
+                  <span>New Here?.</span>
+                </form>
+                <a class="btn btn-light mybtn" href='/web/create/'>Sign Up</a>
             <p>
             </p>
           </div>
