@@ -12,7 +12,7 @@ const web = require('./routes/web')
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.connect("mongodb+srv://urlshortner:urlshortner@node.bczjx.mongodb.net/CLI?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true})
-.then((result)=>{console.log('connected')})
+.then((result)=>{app.listen(process.env.PORT||3000)})
 .catch((err)=>console.log(err))
 app.use(cookieParser())
 app.set('views','templates')

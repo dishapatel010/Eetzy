@@ -60,7 +60,6 @@ background-color: white;
 height: 1.8em;
 width: 25px;
 border-radius: 5px;
-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
 } */
 
@@ -80,14 +79,23 @@ hr{
     flex-wrap: wrap;
 }
 .contents > div {
-    height: 2em;
+    height: 7em;
+    padding: 1em;
     justify-content: center;
-    flex-grow: 1;
     margin: 1em;
     text-align: center;
-    width: 2em;
+    width: 7em;
+    border: 1px solid rgb(206, 205, 204);
     border-radius: 0.5em;
 }
+.contents > div:hover{
+    transition: all 50ms ease;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.btn-dark>a{
+    text-decoration: none;
+    color:white;
+} 
 
 .contents>div>a{
     text-decoration: none;

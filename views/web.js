@@ -83,7 +83,10 @@ const checkuserexists=(req,res,next)=>{
     })
     }   
 const gethome=(req,res)=>{
-    res.render('home')
+
+    const auth_token=req.cookies.authtoken
+    const username=jwt.verify(auth_token,jwt_secret)
+    res.render('home',{username:username})    
 }
 const logout=(req,res)=>{
     res.clearCookie('authtoken')
