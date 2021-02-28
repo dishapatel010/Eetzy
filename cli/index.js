@@ -22,6 +22,8 @@ const options = yargs
 .option("u", { alias:"username",describe: "username", type: "string", demandOption: false })
 .option("p", { alias:"password",describe: "password", type: "string", demandOption: false })
 .option("setpermission", { alias:"setpermission",describe: "give access", type: "string", demandOption: false })
+.option("grf", { alias:"getremotefile",describe: "get remote file", type: true, demandOption: false })
+.option("i", { alias:"fileid",describe: "file_id", type: "string", demandOption: false })
 .argv;
 
 if (token.authtoken) {
@@ -104,6 +106,24 @@ if(options.setpermission){
     .then(res=>console.log(res.data))
     .catch(err=>console.log(err))
 
+}
+if(options.getremotefile){
+    if (options.username && options.fileid) {
+        console.log(options.getremotefile,options.username,options.fileid)
+        const headers={
+            user:options.username
+        }
+        axios.get(`http://localhost:3000/cli/getremotefile/${options.fileid}`,{headers})
+        .then(resp=>{
+            const buffer=new Buffer.from(resp.data.file_to_send)
+            const file_name=resp.data.name
+            fs.writeFileSync(`./Downloads/${file_name}`,String(buffer))
+        
+        
+        
+        })
+        .catch(Err=>console.log(Err))
+    }
 }
 }
 
