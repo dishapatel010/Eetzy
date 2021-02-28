@@ -24,7 +24,7 @@ app.use(bodyparser.urlencoded({extended:true}))
 app.use(fileupload())
 app.use('/cli/',cli)
 app.use('/web/',web)
-// app.use('/dev/',dev)
+app.use('/dev/',dev)
 app.get('/',(req,res)=>{
 
     res.redirect('/web/');

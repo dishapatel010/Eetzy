@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const CLIU=require('../models/cliuser')
 const User=require('../models/users')
 const fs=require('fs')
+const Shared = require('../models/shared')
 const jwt_secret="#1AmanKumarM"
 
 router.get('/getfile/:id',(req,res)=>{
@@ -48,6 +49,7 @@ router.get('/find',(req,res)=>{
 })
 
 router.post('/upload',async (req,res)=>{
+    console.log("reqcame")
     const username=jwt.verify(req.headers.authtoken,jwt_secret);
     const filename=req.headers.name
     const incfile=req.files.file
@@ -71,7 +73,7 @@ router.post('/upload',async (req,res)=>{
         if(err){
             res.status(503).send(err);
         }
-        CLIU.update({username:username},{ $push: { files:  fileobj  } })
+        CLIU.updateOne({username:username},{ $push: { files:  fileobj  } })
         .then(res=>console.log(res))
         .catch(err=>console.log(err))
         res.status(200).send("file uploaded")
@@ -115,7 +117,6 @@ router.post('/registeruser',async (req,res,next)=>{
     })
     var decoded = jwt.verify(token,jwt_secret);
     // res.send(token)
-    res.end()
 })
 
 
@@ -125,10 +126,51 @@ router.post('/login',async (req,res)=>{
         const token = jwt.sign(req.body.name,jwt_secret)
         res.status(200).send(token)
     }})
-    .catch(er=>console.log(er))
+    .catch(er=>{console.log(er)
     res.status(403).send("incorrect password")
-    res.end()
+    })
 })
+router.post('/setpermission/:id',async(req,res)=>{
+    const id=Number(req.params.id)
+    const username=jwt.verify(req.body.authtoken,jwt_secret)
+    var found=false;
+    await CLIU.findOne({username:username})
+    .then(async resp=>{
+            for (let i = 0; i < resp.files.length; i++) {
+                const element = resp.files[i];
+                if (element.id===id) {
+                    found =await true
+                    const new_instance=new Shared(element)
+                    new_instance.owner=username
+                    new_instance.save()
+                    .then(resp=>res.send("File made public"))
+                    .catch(err=>{console.log(err);res.send("File not found.")})  
+                    break              
+                }
+            }
+
+    })
+    
+    .catch(err=>{console.log(err);res.send("File not found")})
+    if(!found){
+        res.send("file not found.")
+    }
+})
+
+router.get('/getremotefile/:id',(req,res)=>{
+    const id=Number(req.params.id)
+    Shared.findOne({owner:req.headers.user,id:id})
+    .then(resp=>{
+        fs.readFile(resp.path,function(err,data){
+        console.log(data,typeof data)
+        res.send({name:resp.name,file_to_send:data})   
+    })
+    })
+    .catch(err=>console.log(err))
+
+
+})
+
 router.get('/test',(req,res)=>{
     CLIU.find()
     .then(ers=>console.log(ers))
