@@ -21,6 +21,7 @@ const options = yargs
 .option("c", { alias:"create",describe: "create account", type: true, demandOption: false })
 .option("u", { alias:"username",describe: "username", type: "string", demandOption: false })
 .option("p", { alias:"password",describe: "password", type: "string", demandOption: false })
+.option("setpermission", { alias:"setpermission",describe: "give access", type: "string", demandOption: false })
 .argv;
 
 if (token.authtoken) {
@@ -96,6 +97,13 @@ if(options.test){
 }
 if ((options.login || options.create) && options.username && options.password){
     console.log("already logged in macha")
+}
+
+if(options.setpermission){
+    axios.post(`http://localhost:3000/cli/setpermission/${options.setpermission}`,{authtoken:token.authtoken})
+    .then(res=>console.log(res.data))
+    .catch(err=>console.log(err))
+
 }
 }
 
