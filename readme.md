@@ -1,4 +1,5 @@
-# EETZY
+# EETZY 
+[deployed here]-[http://eetzy.herokuapp.com]
 ## _Dynamic Web app_
 
 
